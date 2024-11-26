@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.MemberDto;
-import com.example.demo.dto.MemberInfoDto;
 import com.example.demo.entity.MemberEntity;
 import com.example.demo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,10 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/member/info")
-    public MemberInfoDto getMemberInfo(@RequestBody MemberDto member) {
-        int memberId = member.getId();
+    public MemberDto getMemberInfo(@RequestBody MemberDto.MemberRequestDto req) {
+        int memberId = req.getId();
         MemberEntity returnMember = memberService.getMemberById(memberId);
-        MemberInfoDto toDto = MemberInfoDto.of(returnMember);
+        MemberDto toDto = MemberDto.of(returnMember);
         return toDto;
     }
 }

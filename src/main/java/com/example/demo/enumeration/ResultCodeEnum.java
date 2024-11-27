@@ -7,7 +7,8 @@ public enum ResultCodeEnum {
     NotFoundFAILED(404, "Not Found"),
     UnauthorizedFAILED(401, "Unauthorized"),
     ForbiddenFAILED(403, "Forbidden"),
-    MethodNotAllowedFAILED(405, "Method Not Allowed");
+    MethodNotAllowedFAILED(405, "Method Not Allowed"),
+    MemberNotFound(40001, "Member Not Found");
 
     private int code;
     private String message;

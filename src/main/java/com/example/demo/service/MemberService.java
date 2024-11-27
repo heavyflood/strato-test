@@ -13,5 +13,8 @@ public class MemberService {
     public MemberEntity getMemberById(int id){
         return memberMapper.getMemberById(id);
     }
+    public int insertMember(MemberEntity memberEntity) {
+            return memberMapper.insertMember(memberEntity);
+    };
 
 }

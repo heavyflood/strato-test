@@ -9,4 +9,15 @@
         WHERE
             id = #{id}
     </select>
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.demo.entity.MemberEntity">
+        INSERT INTO
+            member (
+                    name, password, email, phone, address, city, state, zipcode, dateOfBirth,
+                    gender, occupation, maritalStatus, education
+                    )
+        VALUES (
+                    #{name}, #{password}, #{email}, #{phone}, #{address}, #{city}, #{state}, #{zipcode}, #{dateOfBirth},
+                    #{gender}, #{occupation}, #{maritalStatus}, #{education}
+               )
+    </insert>
 </mapper>

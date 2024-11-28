@@ -69,6 +69,12 @@ public class MemberDto {
     }
 
     @Getter
+    public static class MemberLoginRequestDto {
+        private int id;
+        private String password;
+    }
+
+    @Getter
     public static class MemberInsertRequestDto {
         private String name;
         private String email;

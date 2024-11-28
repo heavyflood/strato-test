@@ -22,10 +22,23 @@ public class MemberController {
     public ResponseDto<MemberDto> getMemberInfo(@RequestBody MemberDto.MemberRequestDto req) {
         MemberEntity entity =
                 Optional.ofNullable(memberService.getMemberById(req.getId()))
-                    .orElseThrow(() -> new GeneralException(ResultCodeEnum.getEnum(40001)));
+                    .orElseThrow(() -> new GeneralException(ResultCodeEnum.MemberNotFound));
 
-        return ResponseDto.of(String.valueOf(ResultCodeEnum.getEnum(200).getCode())
-                ,ResultCodeEnum.getEnum(200).getMessage()
+        return ResponseDto.of(
+                ResultCodeEnum.SUCCESS.getCode()
+                ,ResultCodeEnum.SUCCESS.getMessage()
                 ,MemberDto.of(entity));
+    }
+
+    @PostMapping("/member/register")
+    public ResponseDto<MemberDto> registerMember(@RequestBody MemberDto.MemberInsertRequestDto req) {
+        MemberEntity entity = MemberDto.memberInsertRequestDtoEntity(req);
+        memberService.insertMember(entity);
+        MemberDto memberDto = MemberDto.of(Optional.ofNullable(memberService.getMemberById(entity.getId()))
+                .orElseThrow(() -> new GeneralException(ResultCodeEnum.MemberNotFound)));
+        return ResponseDto.of(
+                ResultCodeEnum.SUCCESS.getCode()
+                , ResultCodeEnum.SUCCESS.getMessage()
+                , memberDto);
     }
 }

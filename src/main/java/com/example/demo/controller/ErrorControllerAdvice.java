@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.GeneralException;
+import com.example.demo.dto.ErrorResponseDto;
 import com.example.demo.dto.ResponseDto;
 import com.example.demo.enumeration.ResultCodeEnum;
 import org.apache.coyote.BadRequestException;
@@ -9,47 +10,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.MethodNotAllowedException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class ErrorControllerAdvice {
+public class ErrorControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ResponseDto<Object> handleException(Exception ex) {
-        int code = HttpStatus.BAD_REQUEST.value();
-        return ResponseDto.of(
-                String.valueOf(code)
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponseDto handleUncaughtException(Exception ex, WebRequest request) {
+        int code = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        return ErrorResponseDto.of(
+                code
                 , ResultCodeEnum.getEnum(code).getMessage()
-                , null);
+                , ex.getMessage());
     }
 
-    @ExceptionHandler(MethodNotAllowedException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    protected ResponseDto<Object> handleMethodNotAllowedException(MethodNotAllowedException ex) {
-        int code = HttpStatus.METHOD_NOT_ALLOWED.value();
-        return ResponseDto.of(
-                String.valueOf(code)
-               , ResultCodeEnum.getEnum(code).getMessage()
-               , null);
-    }
 
     @ExceptionHandler(GeneralException.class)
-    protected ResponseDto<Object> handleGeneralException(GeneralException ex) {
+    public ErrorResponseDto<Object> handleGeneralException(GeneralException ex) {
         int code = ex.getResultCode().getCode();
-        return ResponseDto.of(
-                String.valueOf(code)
+        return ErrorResponseDto.of(
+                code
                , ex.getResultCode().getMessage()
-               , null);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ResponseDto<Object> handleNotFoundException(NotFoundException ex) {
-        int code = HttpStatus.NOT_FOUND.value();
-        return ResponseDto.of(
-                String.valueOf(code)
-                , ResultCodeEnum.getEnum(code).getMessage()
-                , null);
+               , ex.getMessage());
     }
 }

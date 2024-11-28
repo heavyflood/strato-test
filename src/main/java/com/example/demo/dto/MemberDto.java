@@ -67,4 +67,39 @@ public class MemberDto {
         private String email;
         private String phone;
     }
+
+    @Getter
+    public static class MemberInsertRequestDto {
+        private String name;
+        private String email;
+        private String phone;
+        private String password;
+        private String address;
+        private String city;
+        private String state;
+        private String zipcode;
+        private String dateOfBirth;
+        private String gender;
+        private String occupation;
+        private String maritalStatus;
+        private String education;
+    }
+
+    public static MemberEntity memberInsertRequestDtoEntity(MemberInsertRequestDto memberInsertRequestDto) {
+        return MemberEntity.builder()
+               .name(memberInsertRequestDto.getName())
+               .email(memberInsertRequestDto.getEmail())
+               .phone(memberInsertRequestDto.getPhone())
+               .password(memberInsertRequestDto.getPassword())
+               .address(memberInsertRequestDto.getAddress())
+               .city(memberInsertRequestDto.getCity())
+               .state(memberInsertRequestDto.getState())
+               .zipcode(memberInsertRequestDto.getZipcode())
+               .dateOfBirth(memberInsertRequestDto.getDateOfBirth())
+               .gender(memberInsertRequestDto.getGender())
+               .occupation(memberInsertRequestDto.getOccupation())
+               .maritalStatus(memberInsertRequestDto.getMaritalStatus())
+               .education(memberInsertRequestDto.getEducation())
+               .build();
+    }
 }
